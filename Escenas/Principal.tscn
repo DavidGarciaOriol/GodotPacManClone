@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://b58jk3gaiahhx"]
+
+[ext_resource type="PackedScene" uid="uid://hbr2yd14t2e1" path="res://Escenas/PacmanPlayer.tscn" id="1_1d6jc"]
+[ext_resource type="PackedScene" uid="uid://coyy0coht68cb" path="res://Escenas/fantasma_azul.tscn" id="2_vutv5"]
+[ext_resource type="PackedScene" uid="uid://bc5xlg7fqoqvw" path="res://Escenas/fantasma_rojo.tscn" id="3_c67ay"]
+[ext_resource type="PackedScene" uid="uid://h7u4wt7858ti" path="res://Escenas/fantasma_rosa.tscn" id="4_iyg22"]
+[ext_resource type="PackedScene" uid="uid://tdtygkuyc8m5" path="res://Escenas/fantasma_amarillo.tscn" id="5_vucbj"]
+[ext_resource type="PackedScene" uid="uid://c5w2at1tmn5vd" path="res://Escenas/fantasma_negro.tscn" id="7_lm51s"]
+[ext_resource type="PackedScene" uid="uid://cqpjxy8dtndev" path="res://Escenas/tilemap.tscn" id="7_qgaj7"]
+[ext_resource type="Script" path="res://Scripts/game_controller.gd" id="8_2u26x"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_v4mct"]
+vertices = PackedVector2Array(173, 152, -63, 152, -63, -20, 173, -20)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-73, -30, -73, 162, 183, 162, 183, -30)])
+
+[node name="Node2D" type="Node2D"]
+
+[node name="PacmanPlayer" parent="." node_paths=PackedStringArray("tilemap") instance=ExtResource("1_1d6jc")]
+z_index = 1
+position = Vector2(112, 215)
+collision_layer = 7
+collision_mask = 7
+tilemap = NodePath("../Tilemap")
+
+[node name="FantasmaNegro" parent="." instance=ExtResource("7_lm51s")]
+z_index = 1
+position = Vector2(160, 161)
+
+[node name="FantasmaAmarillo" parent="." instance=ExtResource("5_vucbj")]
+position = Vector2(150, 133)
+
+[node name="FantasmaAzul" parent="." instance=ExtResource("2_vutv5")]
+position = Vector2(171, 133)
+
+[node name="FantasmaRojo" parent="." instance=ExtResource("3_c67ay")]
+position = Vector2(171, 109)
+
+[node name="FantasmaRosa" parent="." instance=ExtResource("4_iyg22")]
+position = Vector2(150, 109)
+
+[node name="Tilemap" parent="." instance=ExtResource("7_qgaj7")]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
+position = Vector2(16, 16)
+navigation_polygon = SubResource("NavigationPolygon_v4mct")
+
+[node name="GameController" type="Node" parent="."]
+script = ExtResource("8_2u26x")
+
+[node name="Puntuacion" type="Label" parent="."]
+offset_left = 101.0
+offset_top = -4.0
+offset_right = 198.0
+offset_bottom = 19.0
+text = "Puntuación: "
+
+[node name="Vidas" type="Label" parent="."]
+offset_left = 17.0
+offset_top = -4.0
+offset_right = 68.0
+offset_bottom = 19.0
+text = "Vidas: 3"

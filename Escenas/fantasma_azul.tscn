@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://coyy0coht68cb"]
+
+[ext_resource type="Texture2D" uid="uid://08ws3s1yunm7" path="res://sprites/normalghosts/blueghost.png" id="1_6n60l"]
+[ext_resource type="Script" path="res://Scripts/fantasma.gd" id="1_kejs0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ayfou"]
+size = Vector2(14, 14)
+
+[node name="FantasmaAzul" type="CharacterBody2D" groups=["fantasmas"]]
+wall_min_slide_angle = 1.5708
+script = ExtResource("1_kejs0")
+velocidad = 70.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ayfou")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_6n60l")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

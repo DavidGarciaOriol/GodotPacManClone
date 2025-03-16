@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://hbr2yd14t2e1"]
+
+[ext_resource type="Texture2D" uid="uid://m1xlh514e18g" path="res://sprites/pacman/pacmansprites.png" id="1_5gbil"]
+[ext_resource type="Script" path="res://Scripts/pacman_player.gd" id="1_irx6v"]
+[ext_resource type="Texture2D" uid="uid://d05pkgcc5bv6p" path="res://sprites/pacman/pacmansprites2.png" id="2_bypke"]
+[ext_resource type="Texture2D" uid="uid://bc4rgtgo5qx8m" path="res://sprites/pacman/pacmansprites3.png" id="3_nucuk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_on2gl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5gbil")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_bypke")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_nucuk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_bypke")
+}],
+"loop": true,
+"name": &"moverse",
+"speed": 16.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dooqd"]
+radius = 7.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+motion_mode = 1
+wall_min_slide_angle = 1.5708
+script = ExtResource("1_irx6v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_on2gl")
+animation = &"moverse"
+frame_progress = 0.0493918
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dooqd")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

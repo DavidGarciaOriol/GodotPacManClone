@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://h7u4wt7858ti"]
+
+[ext_resource type="Script" path="res://Scripts/fantasma.gd" id="1_g4fb8"]
+[ext_resource type="Texture2D" uid="uid://cc3jm75hqbw2" path="res://sprites/normalghosts/pinkghost.png" id="1_wse31"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n4ru"]
+size = Vector2(14, 14)
+
+[node name="FantasmaRosa" type="CharacterBody2D" groups=["fantasmas"]]
+wall_min_slide_angle = 1.5708
+script = ExtResource("1_g4fb8")
+velocidad = 70.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7n4ru")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_wse31")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

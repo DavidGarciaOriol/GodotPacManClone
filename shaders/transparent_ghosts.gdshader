@@ -1,0 +1,9 @@
+shader_type canvas_item;
+
+uniform vec4 tint_color = vec4(1.0, 1.0, 1.0, 1.0);
+
+void fragment() {
+    vec4 color = texture(TEXTURE, UV);
+    color.rgb = mix(color.rgb, tint_color.rgb, 0.75);
+    COLOR = color;
+}

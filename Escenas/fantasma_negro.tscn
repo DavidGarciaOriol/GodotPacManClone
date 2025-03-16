@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://c5w2at1tmn5vd"]
+
+[ext_resource type="Script" path="res://Scripts/fantasma_negro.gd" id="1_t4hqy"]
+[ext_resource type="Texture2D" uid="uid://dkuuchrwxkxq4" path="res://sprites/blackghost/blackghostAnim1.png" id="1_tc26c"]
+[ext_resource type="Texture2D" uid="uid://f1vq5hxxs0ap" path="res://sprites/blackghost/blackghostAnim2.png" id="2_h48yw"]
+[ext_resource type="Texture2D" uid="uid://de74xrt64ev2n" path="res://sprites/blackghost/blackghostAnim3.png" id="3_8mf7l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tiosb"]
+size = Vector2(14, 14)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h2ibn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_tc26c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_h48yw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_8mf7l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_h48yw")
+}],
+"loop": true,
+"name": &"brillar",
+"speed": 3.0
+}]
+
+[node name="FantasmaNegro" type="CharacterBody2D"]
+script = ExtResource("1_t4hqy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tiosb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_h2ibn")
+animation = &"brillar"

@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://bc5xlg7fqoqvw"]
+
+[ext_resource type="Script" path="res://Scripts/fantasma.gd" id="1_bxlk0"]
+[ext_resource type="Texture2D" uid="uid://b44rkyp5pk47j" path="res://sprites/normalghosts/redghost.png" id="1_pymmh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_td6e0"]
+size = Vector2(14, 14)
+
+[node name="FantasmaRojo" type="CharacterBody2D" groups=["fantasmas"]]
+wall_min_slide_angle = 1.5708
+script = ExtResource("1_bxlk0")
+velocidad = 70.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_td6e0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_pymmh")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
