@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b641fj2db8xs7"]
+
+[ext_resource type="Script" path="res://Scripts/escaner_puntos.gd" id="1_r0cwd"]
+
+[node name="EscanerPuntos" type="Node"]
+script = ExtResource("1_r0cwd")

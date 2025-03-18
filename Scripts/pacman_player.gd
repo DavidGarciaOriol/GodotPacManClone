@@ -1,3 +1,4 @@
+class_name PacmanPlayer
 extends CharacterBody2D
 
 # Físicas
@@ -9,12 +10,20 @@ var direccion: Vector2 = Vector2.ZERO # Dirección del movimiento
 var tilemap_puntos: TileMapLayer
 var tilemap_puntos_grandes: TileMapLayer
 
+# Posición inicial
+var posicion_inicial: Vector2
+
+# Señales
+signal vida_perdida # cuando es alcanzado por un fantasma
+signal sumar_puntos(cantidad: int) # cuando recoge puntos
+
 func _ready() -> void:
+	posicion_inicial = global_position
 	tilemap_puntos = tilemap.get_child(2)
 	tilemap_puntos_grandes = tilemap.get_child(1)
 
-# Puntuación
-var puntuacion = 0
+# Invencibilidad por punto grande
+var efecto_punto_grande_activo: bool = false
 
 # Recibe los controles de movimiento.
 func recibir_input():
@@ -50,15 +59,15 @@ func comprobar_pickups_suelo():
 
 	# Comprobar si hay un punto en la capa correspondiente
 	if tilemap_puntos.get_cell_source_id(grid_pos_puntos) != -1:
+		sumar_puntos.emit(10)
 		tilemap_puntos.erase_cell(grid_pos_puntos)  # Borra el punto
-		puntuacion += 10
-		print("¡Punto recogido! Puntuación:", puntuacion)
 
 	# Comprobar si hay punto grande en la capa correspondiente
 	if tilemap_puntos_grandes.get_cell_source_id(grid_pos_puntos_grandes) != -1:
+		sumar_puntos.emit(50)
 		tilemap_puntos_grandes.erase_cell(grid_pos_puntos_grandes)  # Borra el punto grande
-		puntuacion += 50
-		print("Punto grande recogido! Puntuación:", puntuacion)
+
+		efecto_punto_grande_activo = true
 		
 		# Avisar a todos los fantasmas de que deben huir
 		for fantasma in get_tree().get_nodes_in_group("fantasmas"):
@@ -66,6 +75,14 @@ func comprobar_pickups_suelo():
 
 		# Iniciar el temporizador de invencibilidad
 		$Timer.start()
+
+# Perder una vida
+func perder_vida():
+	# Enviamos la señal al Game Controller
+	vida_perdida.emit()
+	
+	# Ocultamos temporalmente a pacman
+	hide()
 
 # Efectúa acciones
 func _process(delta: float) -> void:
@@ -78,4 +95,5 @@ func _process(delta: float) -> void:
 func _on_timer_timeout() -> void:
 	print("El punto grande ha terminado. Los fantasmas vuelven a perseguir.")
 	for fantasma in get_tree().get_nodes_in_group("fantasmas"):
-		fantasma.cambiar_estado(fantasma.EstadoFantasma.Persiguiendo)
+		efecto_punto_grande_activo = false
+		fantasma.cambiar_modo_perseguir()

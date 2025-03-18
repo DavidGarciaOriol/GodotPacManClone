@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cki1l5o18k7ed"]
+
+[ext_resource type="Script" path="res://Scripts/game_controller.gd" id="1_taf3m"]
+
+[node name="GameController" type="Node" node_paths=PackedStringArray("label_vidas", "label_puntuacion", "label_objetivo_puntos", "pacman")]
+script = ExtResource("1_taf3m")
+label_vidas = NodePath("")
+label_puntuacion = NodePath("")
+label_objetivo_puntos = NodePath("")
+pacman = NodePath("")

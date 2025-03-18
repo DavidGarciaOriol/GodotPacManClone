@@ -3,16 +3,18 @@
 [ext_resource type="Script" path="res://Scripts/fantasma.gd" id="1_bxlk0"]
 [ext_resource type="Texture2D" uid="uid://b44rkyp5pk47j" path="res://sprites/normalghosts/redghost.png" id="1_pymmh"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_td6e0"]
-size = Vector2(14, 14)
+[sub_resource type="CircleShape2D" id="CircleShape2D_v5tmt"]
+radius = 7.0
 
 [node name="FantasmaRojo" type="CharacterBody2D" groups=["fantasmas"]]
+collision_layer = 4
+collision_mask = 3
 wall_min_slide_angle = 1.5708
 script = ExtResource("1_bxlk0")
-velocidad = 70.0
+velocidad = 20.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_td6e0")
+shape = SubResource("CircleShape2D_v5tmt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_pymmh")

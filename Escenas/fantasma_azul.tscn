@@ -3,16 +3,18 @@
 [ext_resource type="Texture2D" uid="uid://08ws3s1yunm7" path="res://sprites/normalghosts/blueghost.png" id="1_6n60l"]
 [ext_resource type="Script" path="res://Scripts/fantasma.gd" id="1_kejs0"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ayfou"]
-size = Vector2(14, 14)
+[sub_resource type="CircleShape2D" id="CircleShape2D_cqdi6"]
+radius = 7.07107
 
 [node name="FantasmaAzul" type="CharacterBody2D" groups=["fantasmas"]]
+collision_layer = 4
+collision_mask = 3
 wall_min_slide_angle = 1.5708
 script = ExtResource("1_kejs0")
-velocidad = 70.0
+velocidad = 5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ayfou")
+shape = SubResource("CircleShape2D_cqdi6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_6n60l")

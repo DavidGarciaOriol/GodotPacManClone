@@ -1,3 +1,4 @@
+class_name Fantasma
 extends CharacterBody2D
 
 # Movimiento
@@ -13,6 +14,9 @@ var posicion_inicial: Vector2 # Posición de inicio y retorno del fantasma
 
 # Agente de navegación
 @onready var agente_navegacion = $NavigationAgent2D
+
+# Puntuación interna
+var puntos_otorgables: int = 200
 
 enum EstadoFantasma {
 	Persiguiendo,
@@ -50,6 +54,18 @@ func _process(delta: float) -> void:
 			
 	move_and_slide()
 
+# var colision = move_and_collide(velocity * delta)
+#	if colision:
+#		var objeto = colision.get_collider()
+#		
+#		if objeto is PacmanPlayer:
+#			if objeto.efecto_punto_grande_activo:
+#				cambiar_modo_retorno()
+#				objeto.sumar_puntos(puntos_otorgables)
+#			else:
+#				objeto.perder_vida()
+
+
 # Estado convencional de la IA de los fantasmas
 func perseguir_jugador():
 	if posicion_jugador:
@@ -76,7 +92,16 @@ func retornar_al_inicio():
 		sprite.modulate.a = 0.3  # Hacer el sprite semi-transparente
 	else:
 		sprite.modulate.a = 1.0  # Restaurar visibilidad
-		cambiar_estado(EstadoFantasma.Persiguiendo)  # Al llegar, vuelve a la normalidad
+		cambiar_modo_perseguir()  # Al llegar, vuelve a la normalidad
+
+func cambiar_modo_perseguir():
+	cambiar_estado(EstadoFantasma.Persiguiendo)
+
+func cambiar_modo_huir():
+	cambiar_estado(EstadoFantasma.Huyendo)
+
+func cambiar_modo_retorno():
+	cambiar_estado(EstadoFantasma.Retornando)
 
 # Función para cambiar el estado del fantasma
 func cambiar_estado(nuevo_estado):
