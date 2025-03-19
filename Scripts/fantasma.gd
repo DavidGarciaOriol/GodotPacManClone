@@ -18,8 +18,10 @@ var posicion_inicial: Vector2 # Posición de inicio y retorno del fantasma
 # Puntuación interna
 var puntos_otorgables: int = 200
 
+# Estados
 enum EstadoFantasma {
 	Persiguiendo,
+	Dispersion,
 	Huyendo,
 	Retornando
 }
@@ -31,14 +33,18 @@ func _ready() -> void:
 	# La posición inicial se guarda para el retorno
 	posicion_inicial = global_position
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	match estado_actual:
 		EstadoFantasma.Persiguiendo:
 			perseguir_jugador()
 			
 			# Quitamos el shader
 			sprite.material = null  
-			
+		
+		EstadoFantasma.Dispersion:
+			dispersarse()
+			# No implementado realmente
+		
 		EstadoFantasma.Huyendo:
 			huir_del_jugador()
 			
@@ -53,18 +59,19 @@ func _process(delta: float) -> void:
 			sprite.material = null  
 			
 	move_and_slide()
+	gestionar_colision()
 
-# var colision = move_and_collide(velocity * delta)
-#	if colision:
-#		var objeto = colision.get_collider()
-#		
-#		if objeto is PacmanPlayer:
-#			if objeto.efecto_punto_grande_activo:
-#				cambiar_modo_retorno()
-#				objeto.sumar_puntos(puntos_otorgables)
-#			else:
-#				objeto.perder_vida()
+func gestionar_colision():
+	for i in range(get_slide_collision_count()):  # Iteramos sobre todas las colisiones del frame
+		var colision = get_slide_collision(i)
+		var objeto = colision.get_collider()
 
+		if objeto is PacmanPlayer:
+			if objeto.estado_actual == objeto.EstadosPacman.Invencible:
+				cambiar_modo_retorno()
+				objeto.sumar_puntos.emit(puntos_otorgables)  # Usa el signal en lugar de llamar directamente
+			else:
+				objeto.perder_vida()
 
 # Estado convencional de la IA de los fantasmas
 func perseguir_jugador():
@@ -76,6 +83,15 @@ func perseguir_jugador():
 		else:
 			velocity = Vector2.ZERO
 
+func dispersarse():
+	# TODO - Se desplazan a las esquinas del mapa
+	# No sé cómo agregar esta función a nivel de diseño
+	# ni cuánto se supone que están dispersándose, o cuándo hacerlo
+	# por lo que la dejo como planteada y ya.
+	
+	# Tras un tiempo, vuelve a modo perseguir
+	cambiar_modo_perseguir()
+	
 # Cuando el jugador coge un punto grande, durante la duración de su efecto
 func huir_del_jugador():
 	if posicion_jugador:
@@ -96,6 +112,9 @@ func retornar_al_inicio():
 
 func cambiar_modo_perseguir():
 	cambiar_estado(EstadoFantasma.Persiguiendo)
+
+func cambiar_modo_dispersion():
+	cambiar_estado(EstadoFantasma.Dispersion)
 
 func cambiar_modo_huir():
 	cambiar_estado(EstadoFantasma.Huyendo)

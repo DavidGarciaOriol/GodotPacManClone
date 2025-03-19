@@ -111,11 +111,30 @@ func comprueba_victoria():
 # Pierde una vida del total
 # Ocurre cuando pacman llama a su método
 # de perder vida al ser golpeado por un fantasma
-func perder_vida():
-	if vidas >= 0:
+func perder_vida():	
+	if vidas > 0:
 		vidas -= 1
 		modificar_display_vidas()
 		comprueba_game_over()
+		
+		if estado_actual == EstadosPartida.PartidaEnCurso:
+			proceso_perder_vida()
+
+# Proceso tras perder una vida
+# Se pausa la pantalla y se reinician las posiciones
+func proceso_perder_vida():
+	
+	# Pausar la partida
+	pausar()
+	
+	# Esperar dos segundos
+	await get_tree().create_timer(2.0).timeout
+	
+	# Los fantasmas y pacman retornan a su posición inicial
+	reiniciar_posiciones()
+	
+	# Reanudar partida
+	reanudar_partida()
 
 # Modifica el display que muestra las vidas restantes
 func modificar_display_vidas():
@@ -144,6 +163,7 @@ func game_over():
 # También cuando pierdes una vida, brevemente el juego cambia a este estado
 func pausar():
 	modificar_estado(EstadosPartida.Pausa)
+	get_tree().paused = true
 
 # Cambia el estado de juego a "partida en curso"
 # Reestablece la partida a la normalidad
@@ -152,7 +172,17 @@ func pausar():
 # Es el estado por defecto del juego al comenzar la partida
 func reanudar_partida():
 	modificar_estado(EstadosPartida.PartidaEnCurso)
+	get_tree().paused = false
 
 # Función que modifica el estado de juego
 func modificar_estado(nuevo_estado: EstadosPartida):
 	estado_actual = nuevo_estado
+
+# Retorna a los fantasmas y a pacman a sus posiciones de origen
+func reiniciar_posiciones():
+	pacman.global_position = pacman.posicion_inicial
+	pacman.show()
+	
+	for fantasma in get_tree().get_nodes_in_group("fantasmas"):
+		fantasma.global_position = fantasma.posicion_inicial
+		fantasma.cambiar_modo_perseguir()

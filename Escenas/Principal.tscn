@@ -19,7 +19,7 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-88, -45, -88, 177, 198
 
 [node name="PacmanPlayer" parent="." node_paths=PackedStringArray("tilemap") instance=ExtResource("1_1d6jc")]
 z_index = 1
-position = Vector2(112, 215)
+position = Vector2(160, 89)
 tilemap = NodePath("../Tilemap")
 
 [node name="FantasmaNegro" parent="." instance=ExtResource("7_lm51s")]
@@ -27,20 +27,21 @@ z_index = 1
 position = Vector2(160, 161)
 
 [node name="FantasmaAmarillo" parent="." instance=ExtResource("5_vucbj")]
-position = Vector2(119, 185)
+position = Vector2(72, 153)
 
 [node name="FantasmaAzul" parent="." instance=ExtResource("2_vutv5")]
-position = Vector2(199, 184)
+position = Vector2(248, 153)
 
 [node name="FantasmaRojo" parent="." instance=ExtResource("3_c67ay")]
-position = Vector2(201, 72)
+position = Vector2(248, 103)
 
 [node name="FantasmaRosa" parent="." instance=ExtResource("4_iyg22")]
-position = Vector2(121, 70)
+position = Vector2(73, 103)
 
 [node name="Tilemap" parent="." instance=ExtResource("7_qgaj7")]
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 position = Vector2(105, 62)
 navigation_polygon = SubResource("NavigationPolygon_v4mct")
 

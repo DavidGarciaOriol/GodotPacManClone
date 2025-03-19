@@ -17,13 +17,19 @@ var posicion_inicial: Vector2
 signal vida_perdida # cuando es alcanzado por un fantasma
 signal sumar_puntos(cantidad: int) # cuando recoge puntos
 
+# Estados
+enum EstadosPacman {
+	Normal,
+	Invencible
+}
+
+# Estado actual
+var estado_actual: EstadosPacman = EstadosPacman.Normal
+
 func _ready() -> void:
 	posicion_inicial = global_position
 	tilemap_puntos = tilemap.get_child(2)
 	tilemap_puntos_grandes = tilemap.get_child(1)
-
-# Invencibilidad por punto grande
-var efecto_punto_grande_activo: bool = false
 
 # Recibe los controles de movimiento.
 func recibir_input():
@@ -66,10 +72,11 @@ func comprobar_pickups_suelo():
 	if tilemap_puntos_grandes.get_cell_source_id(grid_pos_puntos_grandes) != -1:
 		sumar_puntos.emit(50)
 		tilemap_puntos_grandes.erase_cell(grid_pos_puntos_grandes)  # Borra el punto grande
-
-		efecto_punto_grande_activo = true
 		
-		# Avisar a todos los fantasmas de que deben huir
+		# Llama al cambio de estado invencible
+		cambiar_invencible()
+		
+		# Avisar a todos los fantasmas en escena de que deben huir
 		for fantasma in get_tree().get_nodes_in_group("fantasmas"):
 			fantasma.cambiar_estado(fantasma.EstadoFantasma.Huyendo)
 
@@ -80,9 +87,18 @@ func comprobar_pickups_suelo():
 func perder_vida():
 	# Enviamos la señal al Game Controller
 	vida_perdida.emit()
-	
-	# Ocultamos temporalmente a pacman
-	hide()
+
+# Cambio de estado
+func cambiar_estado(nuevo_estado: EstadosPacman):
+	estado_actual = nuevo_estado
+
+# Cambia el estado a invencible
+func cambiar_invencible():
+	cambiar_estado(EstadosPacman.Invencible)
+
+# Cambia el estado al normal
+func cambiar_normal():
+	cambiar_estado(EstadosPacman.Normal)
 
 # Efectúa acciones
 func _process(delta: float) -> void:
@@ -95,5 +111,8 @@ func _process(delta: float) -> void:
 func _on_timer_timeout() -> void:
 	print("El punto grande ha terminado. Los fantasmas vuelven a perseguir.")
 	for fantasma in get_tree().get_nodes_in_group("fantasmas"):
-		efecto_punto_grande_activo = false
+		# Llama al cambio de estado a normal
+		cambiar_normal()
+		
+		# Todos los fantasmas normales en escena cambian a perseguir de nuevo
 		fantasma.cambiar_modo_perseguir()

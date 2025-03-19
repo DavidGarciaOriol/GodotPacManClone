@@ -11,7 +11,7 @@ collision_layer = 4
 collision_mask = 3
 wall_min_slide_angle = 1.5708
 script = ExtResource("1_bxlk0")
-velocidad = 20.0
+velocidad = 40.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_v5tmt")
